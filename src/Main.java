@@ -34,8 +34,8 @@ public class Main {
         Map<Character, Integer> sortedLetters = letters
                 .entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (x, y) -> y, LinkedHashMap::new));
         System.out.println(sortedLetters);
     }
 
