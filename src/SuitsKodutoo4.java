@@ -104,11 +104,10 @@ public class SuitsKodutoo4 {
     }
 
     public static Map<String, Integer> getFirst5WordsByValueDesc(Map<String, Integer> words) {
-        Map<String, Integer> sortedEntries = words.entrySet()
+        return words.entrySet()
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .limit(5)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (x, y) -> y, LinkedHashMap::new));
-        return sortedEntries;
     }
 }
