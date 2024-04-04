@@ -30,34 +30,11 @@ public class SuitsKodutoo4 {
             Collections.sort(sortedWordsRandS);
             System.out.println(sortedWordsRandS);
 
-            Map<String, Integer> wordsWithR = new HashMap<>();
-            Map<String, Integer> wordsWithS = new HashMap<>();
-            List<Character> firstLetters = Arrays.asList('r', 's');
+            Map<String, Integer> wordsWithR = getWordsByFirstLetter('r', words);
+            Map<String, Integer> wordsWithS = getWordsByFirstLetter('s', words);
 
-            for (String word : words) {
-                for (int i = 0; i < word.length(); i++) {
-                    char firstChar = Character.toLowerCase(word.charAt(0));
-                    if (firstLetters.contains(firstChar)) {
-                        if (firstChar == 's') {
-                            wordsWithS.put(word.toLowerCase(), wordsWithS.getOrDefault(word.toLowerCase(), 0) + 1);
-                        } else {
-                            wordsWithR.put(word.toLowerCase(), wordsWithR.getOrDefault(word.toLowerCase(), 0) + 1);
-                        }
-                    }
-                }
-            }
-
-            List<Map.Entry<String, Integer>> sortedEntriesR = wordsWithR.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(5)
-                    .toList();
-
-            List<Map.Entry<String, Integer>> sortedEntriesS = wordsWithS.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(5)
-                    .toList();
+            Map<String, Integer> sortedEntriesR = getFirst5WordsByValueDesc(wordsWithR);
+            Map<String, Integer> sortedEntriesS = getFirst5WordsByValueDesc(wordsWithS);
 
             System.out.println(sortedEntriesR);
             System.out.println(sortedEntriesS);
@@ -110,5 +87,28 @@ public class SuitsKodutoo4 {
             }
         }
         return new ArrayList<>(wordsRandS);
+    }
+
+    public static Map<String, Integer> getWordsByFirstLetter(char firstLetter, List<String> words) {
+        Map<String, Integer> wordsWithFirstLetter = new HashMap<>();
+
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                char firstChar = Character.toLowerCase(word.charAt(0));
+                if (firstChar == firstLetter) {
+                    wordsWithFirstLetter.put(word.toLowerCase(), wordsWithFirstLetter.getOrDefault(word.toLowerCase(), 0) + 1);
+                }
+            }
+        }
+        return wordsWithFirstLetter;
+    }
+
+    public static Map<String, Integer> getFirst5WordsByValueDesc(Map<String, Integer> words) {
+        Map<String, Integer> sortedEntries = words.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .limit(5)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (x, y) -> y, LinkedHashMap::new));
+        return sortedEntries;
     }
 }
